@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.AlarmMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.pojo.Alarm">
+        <constructor>
+            <idArg column="device_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="token" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="alg_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="timestamp" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="image" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="msg" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="obj_count" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="obj_list" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="appendix" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        device_id, token, alg_id, timestamp, image, msg, obj_count, obj_list, appendix
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM alarm
+    </select>
+    <select id="selectByID" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM alarm
+        where device_id = #{deviceID, jdbcType=VARCHAR}
+    </select>
+    <insert id="add" parameterType="com.example.demo.pojo.Alarm">
+        insert into alarm (device_id, token, alg_id, timestamp, image, msg, obj_count, obj_list, appendix)
+        values (#{deviceID,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR},#{algID,jdbcType=VARCHAR},
+        #{timestamp,jdbcType=VARCHAR},#{image,jdbcType=VARCHAR}, #{msg,jdbcType=VARCHAR},
+        #{objCount,jdbcType=VARCHAR}, #{objList,jdbcType=VARCHAR}, #{appendix,jdbcType=VARCHAR})
+    </insert>
+    <update id="update" parameterType="com.example.demo.pojo.Alarm">
+        update alarm
+        <trim prefix="set" suffixOverrides=",">
+            <if test="deviceID!=null">device_id=#{deviceID},</if>
+            <if test="token!=null">token=#{token},</if>
+            <if test="algID!=null">alg_id=#{algID},</if>
+            <if test="timestamp!=null">timestamp=#{timestamp},</if>
+            <if test="image!=null">image=#{image},</if>
+            <if test="msg!=null">msg=#{msg},</if>
+            <if test="objCount!=null">obj_count=#{objCount},</if>
+            <if test="objList!=null">obj_list=#{objList},</if>
+            <if test="appendix!=null">appendix=#{appendix},</if>
+        </trim>
+        WHERE device_id=#{deviceID}
+    </update>
+</mapper>

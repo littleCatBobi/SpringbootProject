@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.dao.TokenMapper">
+    <resultMap id="BaseResultMap" type="com.example.demo.pojo.Token">
+        <constructor>
+            <idArg column="device_id" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="token" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
+        device_id, token
+    </sql>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM token
+    </select>
+
+    <select id="selectByID" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM token
+        where device_id = #{deviceID, jdbcType=VARCHAR}
+    </select>
+
+    <insert id="add" parameterType="com.example.demo.pojo.Token">
+        insert into token (device_id, token)
+        values (#{deviceID,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR})
+    </insert>
+</mapper>
